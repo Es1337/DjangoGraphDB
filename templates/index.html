@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DataViz</title>
+        <style type="text/css">
+            #viz {
+                width: 900px;
+                height: 700px;
+                border: 1px solid darkgray;
+                font: 12pt arial;
+            }
+
+            .row {
+                display: flex;
+                content: "";
+                clear: both;
+            }
+
+            .row-panel {
+                display: flex;
+                content: "";
+                clear: both;
+                height: 33%;
+            }
+
+            select {
+                margin: auto;
+                margin-top: 0px;
+            }
+              
+            .column {
+                flex: 50%;
+                padding: 10px;
+                overflow: auto;
+            }
+
+        </style>
+        <script type="text/javascript" src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    </head>
+    <script type="text/javascript">
+        let viz;
+        function draw() {
+            var config = {
+                container_id: "viz",
+                server_url: "neo4j://96b3e62a.databases.neo4j.io:7687",
+                server_user: "neo4j",
+                server_password: "{{ neo_pass }}",
+                labels: {
+                    "Person": {
+                        "caption": "surname",
+                        "title_properties": [
+                            "name",
+                            "surname"
+                        ],
+                        "size": 2,
+                        "font": {
+                            "size": 30
+                        }
+                    },
+                    "League": {
+                        "caption": "name",
+                        "title_properties": [
+                            "name",
+                            "country"
+                        ],
+                        "size": 5,
+                        "font": {
+                            "size": 40
+                        }
+                    },
+                    "Club": {
+                        "caption": "name",
+                        "title_properties": [
+                            "name"
+                        ],
+                        "size": 3,
+                        "font": {
+                            "size": 34
+                        }
+                    }
+                },
+                relationships: {
+                    "EXPLAYER_OF": {
+                        "thickness": 0.1,
+                    },
+                    "PLAYER_OF": {
+                        "thickness": 0.2,
+                    },
+                    "PLAYS_IN": {
+                        "thickness": 0.3,
+                    },
+                },
+                initial_cypher: "MATCH p=(n)--(m) RETURN p LIMIT 100",
+                // uncomment before deploy
+                encrypted: "ENCRYPTION_ON",
+            }
+            viz = new NeoVis.default(config);
+            viz.render();
+        };
+        function getStartNodeType() {
+            var startSel = document.getElementById('start-node-select');
+            var relSel = document.getElementById('rel-select');
+            var endSel = document.getElementById('end-node-select');
+
+            cypher = "MATCH p=(n" + startSel.value + ")-[" + relSel.value + "]-(m" + endSel.value + ") RETURN p LIMIT 100";
+            //console.log(cypher);
+    
+            viz.renderWithCypher(cypher)
+          };
+
+          var url = "panel?get=people";
+        
+        function setEndpoint() {
+            const apiUrl = 'panel?get=';
+
+            var selValue = document.getElementById('endpoint-select').value;
+            var endpoint = "people";
+
+            if (selValue != ""){
+                endpoint = selValue;
+            }
+
+            url = apiUrl + endpoint;
+            //console.log(url)
+        }
+
+        function getUrl(){
+            window.location.replace(url);
+        }
+    </script>
+    <body onload="draw()">
+        <div class="row">
+            {% block display %}
+            <div id="viz" class="column"></div>
+            {% endblock %}
+            <div id="panel" class="column">
+                {% block panel %}
+                <a href="panel">JSON Data</a>
+                <div class="row-panel">
+                    <br>Pick start node label, relationship label, and/or end node label just as you would form a cypher query to see the results.
+                    <br>NeoVis looks for the created pattern in the database. 
+                    <br>By default every label is not set.
+                    <br>You can move nodes around on the display with left click and drag, as well as zoom in or out with scroll.
+                    <br>Upon hover node displays its attributes.
+                    <br>JSON Data link takes you to a panel for returning node lists from API.
+                </div>
+                <div class="row-panel">
+                    <select name="start-node-type" id="start-node-select" onchange="getStartNodeType();">
+                        <option value="">*</option>
+                        <option value=":Person">Person</option>
+                        <option value=":Player">Player</option>
+                        <option value=":Manager">Manager</option>
+                        <option value=":Club">Club</option>
+                        <option value=":League">League</option>
+                        <option value=":Trophy">Trophy</option>
+                    </select>
+                    <a>-[</a>
+                    <select name="rel-type" id="rel-select" onchange="getStartNodeType();">
+                        <option value="">*</option>
+                        <option value=":PLAYER_OF">PLAYER_OF</option>
+                        <option value=":EXPLAYER_OF">EXPLAYER_OF</option>
+                        <option value=":MANAGER_OF">MANAGER_OF</option>
+                        <option value=":EXMANAGER_OF">EXMANAGER_OF</option>
+                        <option value=":PLAYS_IN">PLAYS_IN</option>
+                        <option value=":WON">WON</option>
+                    </select>
+                    <a>]-></a>
+                    <select name="end-node-type" id="end-node-select" onchange="getStartNodeType();">
+                        <option value="">*</option>
+                        <option value=":Person">Person</option>
+                        <option value=":Player">Player</option>
+                        <option value=":Manager">Manager</option>
+                        <option value=":Club">Club</option>
+                        <option value=":League">League</option>
+                        <option value=":Trophy">Trophy</option>
+                    </select>
+                </div>
+                <div class="row-panel">
+                    <b>If you can't see the visualization try changing the browser, it's proven to work on Chrome and Opera GX as well as some mobile devices.</b>
+                </div>
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

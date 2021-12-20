@@ -1,0 +1,7 @@
+{
+	"start_node_type": "Person",
+  	"start_node_uid": "f15894cf1ace44e0b212d50eac6f3208",
+  	"end_node_type": "Club",
+  	"end_node_uid": "0bf8ffba09b34d6abad7840aa85cd9fe",
+  	"rel_type": "career_clubs"
+}

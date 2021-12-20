@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+
+{% block display %}
+<div class="column" id="display">
+    <pre>
+    {{ retrievedData }}
+    </pre>
+</div>
+{% endblock %}
+
+{% block panel %}
+    <a href="/">Return</a>
+    <div class="row-panel">
+        <select name="endpoint-type" id="endpoint-select" onchange="setEndpoint();">
+            <option value="">*</option>
+            <option value="people">Person</option>
+            <option value="players">Player</option>
+            <option value="managers">Manager</option>
+            <option value="clubs">Club</option>
+            <option value="leagues">League</option>
+            <option value="trophies">Trophy</option>
+        </select>
+        {% comment %} <button class="get-btn" onclick="getAPIData();">Get</button> {% endcomment %}
+
+        <button class="get-btn" onclick="getUrl();">Get</button>
+    </div>
+{% endblock %}
