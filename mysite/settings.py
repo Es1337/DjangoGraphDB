@@ -184,4 +184,4 @@ payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
 env.read_env(io.StringIO(payload))
 neo_user = "neo4j"
 neo_pass = env.get_value("pass")
-NEOMODEL_NEO4J_BOLT_URL = os.environ.get('NEO4J_URL', "neo4j+s://" + neo_user + ":" + neo_pass + "@96b3e62a.databases.neo4j.io")
+NEOMODEL_NEO4J_BOLT_URL = os.environ.get('NEO4J_URL', "neo4j+s://" + neo_user + ":" + neo_pass + "@b13fa672.databases.neo4j.io")

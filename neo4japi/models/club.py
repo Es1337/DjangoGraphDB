@@ -3,9 +3,8 @@ from datetime import datetime
 from django_neomodel import DjangoNode
 from neomodel import StructuredNode, StringProperty,\
                      DateTimeProperty, UniqueIdProperty,\
-                     RelationshipTo, DateProperty,\
+                     RelationshipTo, RelationshipFrom, DateProperty,\
                      IntegerProperty
-from neomodel.relationship_manager import RelationshipFrom
 from neo4japi.models.nodeutils import NodeUtils
 
 class Club(DjangoNode, NodeUtils):

@@ -25,7 +25,7 @@ def control_panel(request):
     if request.method == 'GET':
         endpoint = request.GET.get('get', 'people')
         print(endpoint)
-        r = requests.get('https://djangographdb.appspot.com/api/' + endpoint)
+        r = requests.get('localhost:8000/api/' + endpoint)
         # print(json.dumps(r.json(), sort_keys=True, indent=4))
 
         context = {

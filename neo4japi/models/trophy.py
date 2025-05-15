@@ -4,8 +4,7 @@ from django_neomodel import DjangoNode
 from neomodel import StructuredNode, StringProperty,\
                      DateTimeProperty, UniqueIdProperty,\
                      RelationshipTo, DateProperty,\
-                     IntegerProperty
-from neomodel.relationship_manager import RelationshipFrom
+                     IntegerProperty, RelationshipFrom
 from neo4japi.models.nodeutils import NodeUtils
 
 class Trophy(DjangoNode, NodeUtils):
